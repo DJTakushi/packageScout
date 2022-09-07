@@ -17,6 +17,27 @@ Parses /var/lib/dpkg/status (and/or any other needed files) and displays a list 
 - run in base directory where `pyproject.toml` is located)
 - will build `.tar.gz` and `.whl` files in `dist/` folder
 
+### Change Ownership to Root
+`chown root:root -R /app2`
+
+### Change Script's Permissions
+`chmod 0755 /app2`
+
+### Generate Source Package
+`py2dsc dist/packagescout-0.0.1.tar.gz`
+
+### Create .deb
+```
+cd deb_dist/packagescout-0.0.1
+dpkg-buildpackage -rfakeroot -uc -us
+```
+
+### Install Package
+```
+cd ..
+dpkg -i python3-packagescout_0.0.1-1_all.deb
+```
+
 # Rules Observed
 - No `source` field
 - `Priority: Optional`
