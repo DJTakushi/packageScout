@@ -12,6 +12,9 @@ Parses /var/lib/dpkg/status (and/or any other needed files) and displays a list 
 `docker run -it packagescout /bin/bash`
 
 
+### Build Python Package
+`python3 -m build` (run in base directory where `pyproject.toml` is located)
+
 # Rules Observed
 - No `source` field
 - `Priority: Optional`
