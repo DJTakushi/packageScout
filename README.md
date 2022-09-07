@@ -13,7 +13,9 @@ Parses /var/lib/dpkg/status (and/or any other needed files) and displays a list 
 
 
 ### Build Python Package
-`python3 -m build` (run in base directory where `pyproject.toml` is located)
+`python3 -m build`
+- run in base directory where `pyproject.toml` is located)
+- will build `.tar.gz` and `.whl` files in `dist/` folder
 
 # Rules Observed
 - No `source` field
