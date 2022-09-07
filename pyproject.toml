@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "packageScout"
+version = "0.0.1"
+authors = [
+  { name="Danny Takushi", email="dannytakushi@gmail.com" },
+]
+description = "Parses /var/lib/dpkg/status (and/or any other needed files) and displays a list of packages explicitly installed by the user."
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.6.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/DJTakushi/packageScout"
+"Bug Tracker" = "https://github.com/DJTakushi/packageScout/issues"
