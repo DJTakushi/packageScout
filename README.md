@@ -64,18 +64,18 @@ ps.exec()
 ```
 
 
-
 # TODOs
-- [x] better automate copying of .deb to product (done in my copy command example)
-- [x] move takushitest.py to product folder
 - [ ] provide flexibility in handling version names
   - [ ] use scripts to recognize version
-- [ ] Provide better documentation
 - [ ] Fix functionality
   - [ ] several other packages are being added
   - [ ] my own package isn't being counted (source is present)
-  - [ ] explore other files/directories
-  - [ ] look at history
+  - Leads
+    - [ ] explore other files/directories
+    - [ ] look at history
+      - [https://linuxhint.com/see-dpkg-apt-history/](https://linuxhint.com/see-dpkg-apt-history/) indicates that `/var/log/apt/history.log` may be a good place to look for `install` instances in the logs, but my local version shows a lot of derived installations.
+- [ ] Add more robust testing, ideally with python's unit-testing framework
+  - Python creates docker images from custom docker files, installs the script, and checks output.  This will be slow.
 
 
 # Further Notes
@@ -261,6 +261,20 @@ Homepage: http://www.sqlite.org/
 Original-Maintainer: Laszlo Boszormenyi (GCS) <gcs@debian.org>
 ```
 
+```
+Package: python3-packagescout
+Status: install ok installed
+Priority: optional
+Section: python
+Installed-Size: 22
+Maintainer: Danny Takushi <dannytakushi@gmail.com>
+Architecture: all
+Source: packagescout
+Version: 0.1-1
+Depends: python3:any (>= 3.3.2-2~)
+Description: Parses /var/lib/dpkg/status (and/or any other needed files)
+Homepage: https://github.com/DJTakushi/packageScout"
+```
 ## Failing exceptions related to Git
 - liberror-perl
 - xauth
