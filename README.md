@@ -64,7 +64,7 @@ ps.exec()
 ```
 
 
-# TODOs
+# 4. TODOs
 - [ ] provide flexibility in handling version names
   - [ ] use scripts to recognize version
 - [ ] Fix functionality
@@ -78,9 +78,9 @@ ps.exec()
   - Python creates docker images from custom docker files, installs the script, and checks output.  This will be slow.
 
 
-# Further Notes
+# 5. Further Notes
 
-# Build Details
+## Build Details
 The `tbuild.sh` script is used to automate builds in the `src` directory of the Docker container.  Details are below.
 
 I found python's [stdeb](https://pypi.org/project/stdeb/) to be the most straightforward method for building a debian package.
@@ -116,13 +116,13 @@ dpkg-buildpackage -rfakeroot -uc -us
 ```
 
 
-# Rules Observed
+## Rules Observed
 - No `source` field
   - Actually doesn't work for my own package, which
 - `Priority: Optional`
 
 
-# /var/lib/dpkg/status Samples
+### /var/lib/dpkg/status Samples
 ```
 Package: git
 Status: install ok installed
@@ -275,7 +275,7 @@ Depends: python3:any (>= 3.3.2-2~)
 Description: Parses /var/lib/dpkg/status (and/or any other needed files)
 Homepage: https://github.com/DJTakushi/packageScout"
 ```
-## Failing exceptions related to Git
+### Failing exceptions related to Git
 - liberror-perl
 - xauth
 - publicsuffix
