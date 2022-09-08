@@ -1,4 +1,7 @@
 class packageScout():
+    def joke(self):
+        return (u'Wenn ist das Nunst [german chars] git und Slotermeyer? Ja! ... '
+        u'Beiherhund das Oder die Flipperwaldt gersput.')
     def testAlive(self):
         ### Debugging function ###
         print("packageScout testAlive()")
@@ -59,7 +62,8 @@ class packageScout():
         chosenList = self.getUserInstalledPackages(packageDictList)
         for i in chosenList:
             print(i['Package'])
-
+    def exec(self):
+        self.displayPackagesInstalledByUser()
 
 if __name__ == "__main__":
     ps = packageScout()
