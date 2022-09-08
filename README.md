@@ -90,7 +90,6 @@ A python package is first built:
 
 `python3 -m build`
 
-- run in base directory where `pyproject.toml` is located) (TODO: delete after confirmation)
 - will build `.tar.gz` and `.whl` files in `dist/` folder
 
 ### 2. Ownership and Permission Adjustments
