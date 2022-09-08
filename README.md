@@ -1,49 +1,129 @@
 # packageScout
-Parses /var/lib/dpkg/status (and/or any other needed files) and displays a list of packages explicitly installed by the user
+Parses `/var/lib/dpkg/status` (and/or any other needed files) and displays a list of packages explicitly installed by the user
 
-# Environment
-### Build
+# 1. Build
+The packageScout package is built in Docker to ensure native compliance with Ubuntu while being agnostic of the developer's host platform.  It is built by default in the initial generation of the Docker image (destination `/app/src/deb_dist/*.deb`), but can be easily rebuilt by running an interactive container and executing the build scripts.
+
+### Build Docker Image
+Build a Docker image with the Dockerfile in the head directory:
+
 `docker build -t packagescout .`
 
-### Run Container
-`docker run packagescout`
+This builds the product by default in `/app/src/deb_dist/*.deb`.
+
+### Copy default product
+1.  Create a temporary docker container called `tempContainer` using the `packagescout` image
+2.  Copy the .deb file into the host's product folder
+3.  Remove the temporary docker container (or keep it if you like)
+
+```
+docker run --name tempContainer packagescout /bin/true
+docker cp tempContainer:/app/src/deb_dist/python3-packagescout_0.1-1_all.deb ./product/python3-packagescout_0.1-1_all.deb
+docker rm tempContainer
+```
+Replace the package-name as necessary.  As of writing, this is correct for the current version.
 
 ### Enter Shell in Interactive Container Environment
+Docker containers can be run and entered through the interactive option `-it`.  This can be useful for development and building without another lengthy `docker build` command.
+
 `docker run -it packagescout /bin/bash`
 
+`-v <hostpath>:<containerpath>` can be used to mount a host directory to the container, which can be helpful for saving built packages outside of the docker container.  I typically use `-v C:\Users\okina\packageScout:\app2` to mount my local directory to the container's `/app2` folder:
+  - `docker run -it -v C:\Users\okina\packageScout:/app2 packagescout /bin/bash`
 
-### Build Python Package
+# 2. Install Package
+Copy the package into your user's machine and install with `dpkg`:
+
+`dpkg -i python3-packagescout_0.1-1_all.deb`
+
+### Test Environment
+The folder `product/` contains a Docker file for creating a test environment.  This is a simple ubuntu18.04 environment with python3 and the contents of the `product/` folder copied into the image's `/app` directory.  The Docker image can be built by entering the `product/` directory and running:
+
+`docker build -t product .`
+
+It can be entered interactively:
+
+`docker run -it product /bin/bash`
+
+Note that if a new package is to be tested, the image will have to be rebuilt or in a mounted volume when a container is started.
+
+
+##### Package Removal
+Remove the package with `dpkg`'s `-P` option:
+
+```
+dpkg -P python3-packagescout
+```
+
+# 3. Use Package
+The `packageScout` package can now be used in python3 by importing it, creating a `packageScout` class, and running the `exec()` function.  The file `product/test.py` provides an example of this, shown below:
+```
+import packageScout
+ps = packageScout.packageScout()
+ps.exec()
+```
+
+
+
+# TODOs
+- [x] better automate copying of .deb to product (done in my copy command example)
+- [x] move takushitest.py to product folder
+- [ ] provide flexibility in handling version names
+  - [ ] use scripts to recognize version
+- [ ] Provide better documentation
+- [ ] Fix functionality
+  - [ ] several other packages are being added
+  - [ ] my own package isn't being counted (source is present)
+  - [ ] explore other files/directories
+  - [ ] look at history
+
+
+# Further Notes
+
+# Build Details
+The `tbuild.sh` script is used to automate builds in the `src` directory of the Docker container.  Details are below.
+
+I found python's [stdeb](https://pypi.org/project/stdeb/) to be the most straightforward method for building a debian package.
+
+### 1. Build Python Package
+A python package is first built:
+
 `python3 -m build`
-- run in base directory where `pyproject.toml` is located)
+
+- run in base directory where `pyproject.toml` is located) (TODO: delete after confirmation)
 - will build `.tar.gz` and `.whl` files in `dist/` folder
 
-### Change Ownership to Root
-`chown root:root -R /app2`
+### 2. Ownership and Permission Adjustments
+The root user needs to have ownership and permissions in the local directory.
 
-### Change Script's Permissions
-`chmod 0755 /app2`
-
-### Generate Source Package
-`py2dsc dist/packagescout-0.0.1.tar.gz`
-
-### Create .deb
 ```
-cd deb_dist/packagescout-0.0.1
+chown root:root -R .
+chmod 0755 .
+```
+
+### 3. Generate Source Packages
+`py2dsc` will convert a distutils-built source tarball into a Debian source package.
+
+```
+py2dsc dist/packagescout-0.1.tar.gz
+```
+
+### 4. Create .deb
+Turn the source package into a .deb:
+
+```
+cd deb_dist/packagescout-0.1
 dpkg-buildpackage -rfakeroot -uc -us
 ```
 
-### Install Package
-```
-cd ..
-dpkg -i python3-packagescout_0.0.1-1_all.deb
-```
 
 # Rules Observed
 - No `source` field
+  - Actually doesn't work for my own package, which
 - `Priority: Optional`
 
 
-# Samples from /var/lib/dpkg/status
+# /var/lib/dpkg/status Samples
 ```
 Package: git
 Status: install ok installed
