@@ -73,7 +73,7 @@ ps.exec()
   - Leads
     - [ ] explore other files/directories
     - [ ] look at history
-      - [https://linuxhint.com/see-dpkg-apt-history/](https://linuxhint.com/see-dpkg-apt-history/) indicates that `/var/log/apt/history.log` may be a good place to look for `install` instances in the logs, but my local version shows a lot of derived installations.
+      - [https://linuxhint.com/see-dpkg-apt-history/](https://linuxhint.com/see-dpkg-apt-history/) indicates that `/var/log/dpkg.log` may be a good place to look for `install` instances in the logs, but my local version shows a lot of derived installations.
 - [ ] Add more robust testing, ideally with python's unit-testing framework
   - Python creates docker images from custom docker files, installs the script, and checks output.  This will be slow.
 
